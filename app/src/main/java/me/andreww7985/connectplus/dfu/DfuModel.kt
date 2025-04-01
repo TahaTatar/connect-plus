@@ -68,7 +68,7 @@ class DfuModel(val speaker: SpeakerModel) : BaseModel {
                 return@coroutineScope
             }
 
-            if (!filename.lowercase().endsWith(".dfu")) {
+            if (!(filename.lowercase().endsWith(".dfu") || filename.lowercase().endsWith(".bin"))) {
                 wrongFileEvent.fire()
                 return@coroutineScope
             }
