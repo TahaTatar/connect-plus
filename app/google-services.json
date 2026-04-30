@@ -1,0 +1,18 @@
+{
+  "project_info": {
+    "project_number": "12345",
+    "project_id": "dummy-project"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12345:android:abcdef",
+        "android_client_info": {
+          "package_name": "me.andreww7985.connectplus"
+        }
+      },
+      "api_key": [{"current_key": "dummy_key"}]
+    }
+  ],
+  "configuration_version": "1"
+}
