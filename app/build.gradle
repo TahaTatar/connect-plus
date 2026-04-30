@@ -7,45 +7,48 @@ def versionMajor = 1
 def versionMinor = 2
 def versionPatch = 2
 
-//def props = new Properties()
-//props.load(new FileInputStream(rootProject.file("release.properties")))
-
 android {
+    compileSdk 34
+    namespace 'me.andreww7985.connectplus'
+
     buildFeatures {
         viewBinding true
     }
 
     signingConfigs {
+        debug {
+            // Varsayılan debug anahtarını kullanacak
+        }
         release {
-            keyPassword props.keyAliasPassword
-            storeFile rootProject.file(props.keyStore)
-            storePassword props.keyStorePassword
-            keyAlias props.keyAlias
+            // Hata vermemesi için debug anahtarına yönlendiriyoruz
+            storeFile file('debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
         }
     }
 
     defaultConfig {
         applicationId "me.andreww7985.connectplus"
-        compileSdk 34
         minSdkVersion 21
         targetSdkVersion 34
         versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch * 10 + 1
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}-"
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
 
     buildTypes {
         debug {
             debuggable true
             minifyEnabled false
-            versionNameSuffix "debug"
+            versionNameSuffix "-debug"
+            signingConfig signingConfigs.debug
         }
         release {
+            // Şifre istememesi için debug config'i kullanıyoruz
+            signingConfig signingConfigs.debug
             debuggable false
-            minifyEnabled true
-            shrinkResources true
-            versionNameSuffix "release"
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
         }
     }
 
@@ -58,23 +61,17 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    namespace 'me.andreww7985.connectplus'
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
-
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-analytics:22.0.2'
     implementation 'com.google.firebase:firebase-crashlytics:19.0.3'
-
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.preference:preference-ktx:1.2.1'
     implementation 'com.google.android.material:material:1.12.0'
-
     implementation 'com.jakewharton.timber:timber:5.0.1'
 }
-apply plugin: 'com.google.gms.google-services'
