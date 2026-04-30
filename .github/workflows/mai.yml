@@ -1,0 +1,31 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    # Wrapper jar hatasını aşmak için resmi Gradle action'ını kullanıyoruz
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+
+    # Burada ./gradlew yerine direkt global 'gradle' komutunu çakıyoruz
+    - name: Build Debug APK
+      run: gradle assembleDebug
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: connectplus-custom
+        path: app/build/outputs/apk/debug/app-debug.apk
